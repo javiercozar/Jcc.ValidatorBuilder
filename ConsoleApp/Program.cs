@@ -1,6 +1,6 @@
 ﻿using Jcc.ValidatorBuilder;
 
-var personOne = new Person("javier", 41, "Pasaje cala figuera");
+var personOne = new Person("javier", 41, "street example");
 
 var entityValidatorRules = EntityValidatorRulesBuilder<Person>
     .Create(personOne)
