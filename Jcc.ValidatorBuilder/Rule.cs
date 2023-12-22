@@ -1,6 +1,6 @@
 namespace Jcc.ValidatorBuilder;
 
-public readonly record struct Rule(
+public readonly record struct Rule<T>(
     string ruleName,
-    bool isValid,
+    Func<T, bool> condition,
     string failedValidationMessage);
