@@ -1,4 +1,13 @@
-﻿using Jcc.ValidatorBuilder;
+﻿using ConsoleApp.Specifications;
+using Jcc.ValidatorBuilder.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+
+var serviceProvider = new ServiceCollection()
+    .AddScoped<IValidatorRulesSpecification<Person>, PersonValidatorRulesSpecification>()
+    .BuildServiceProvider();
+
+var service = serviceProvider.GetService<IValidatorRulesSpecification<Person>>();
+var validator = service?.GetRulesValidator();
 
 Person[] persons = [
     new Person("javier", 41, "street example"),
@@ -6,23 +15,13 @@ Person[] persons = [
     new Person("Pepe", 30, "street example2")
 ];
 
-
-var entityValidatorRules = EntityEntityRulesValidatorBuilder<Person>
-    .Create()
-    .AddRule(
-        ruleName: "NameStartWithJ",
-        condition: person => person.Name.StartsWith($"j"),
-        failedValidationMessage: "Person Name have to start with J")
-    .AddRule(
-        ruleName: "PersonLimitAge",
-        condition: person => person.Age > 40,
-        failedValidationMessage: "Age have to be more than 40")
-    .Build();
-
-
 foreach (var person in persons) {
-    var personValidation = entityValidatorRules.Validate(person);
+    if (validator is null)
+        continue;
+
+    var personValidation = validator.Validate(person);
     Console.WriteLine($" person with name: ${person.Name} - Validatiion {personValidation.IsValid}");
+
     foreach (var rulesErrorMessage in personValidation.FailedErrorMessages) {
         Console.WriteLine($" \t rule name: {rulesErrorMessage.Key} - ruleErrorMessage: {rulesErrorMessage.Value}");
     }

@@ -2,13 +2,13 @@ using Jcc.ValidatorBuilder.Interfaces;
 
 namespace Jcc.ValidatorBuilder;
 
-public sealed class EntityRulesValidator<T>(IEnumerable<Rule<T>> rules) : IEntityRulesValidator<T> {
-    public EntityValidationRulesResult Validate(T entity) {
+public sealed class RulesValidator<T>(IEnumerable<Rule<T>> rules) : IRulesValidator<T> {
+    public ValidationRulesResult Validate(T entity) {
         var ruleResults = rules.Select(p => p.condition(entity)).ToArray();
         var isValid = ruleResults.Any(rule => rule is false);
         var ruleErrorMessages = getRulesErrorMessages();
 
-        return new EntityValidationRulesResult(isValid, ruleErrorMessages);
+        return new ValidationRulesResult(isValid, ruleErrorMessages);
     }
 
     private RulesErrorMessages getRulesErrorMessages() {

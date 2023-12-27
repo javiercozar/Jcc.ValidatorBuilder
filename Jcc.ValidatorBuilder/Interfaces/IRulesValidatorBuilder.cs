@@ -2,11 +2,11 @@
 
 namespace Jcc.ValidatorBuilder.Interfaces;
 
-public interface IEntityRulesValidatorBuilder<T> {
-    IEntityRulesValidatorBuilder<T> AddRule(
+public interface IRulesValidatorBuilder<T> {
+    IRulesValidatorBuilder<T> AddRule(
         string ruleName,
         Expression<Func<T, bool>> condition,
         string failedValidationMessage);
 
-    IEntityRulesValidator<T> Build();
+    IRulesValidator<T> Build();
 }

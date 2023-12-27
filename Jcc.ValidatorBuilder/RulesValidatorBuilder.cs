@@ -3,13 +3,13 @@ using Jcc.ValidatorBuilder.Interfaces;
 
 namespace Jcc.ValidatorBuilder;
 
-public class EntityEntityRulesValidatorBuilder<T> : IEntityRulesValidatorBuilder<T> {
+public class RulesValidatorBuilder<T> : IRulesValidatorBuilder<T> {
     private readonly List<Rule<T>> rules = [];
 
-    private EntityEntityRulesValidatorBuilder() { }
-    public static EntityEntityRulesValidatorBuilder<T> Create() => new();
+    private RulesValidatorBuilder() { }
+    public static RulesValidatorBuilder<T> Create() => new();
 
-    public IEntityRulesValidatorBuilder<T> AddRule(string ruleName,
+    public IRulesValidatorBuilder<T> AddRule(string ruleName,
                                                    Expression<Func<T, bool>> condition,
                                                    string failedValidationMessage = "") {
         if (condition.CanReduce)
@@ -22,5 +22,5 @@ public class EntityEntityRulesValidatorBuilder<T> : IEntityRulesValidatorBuilder
         return this;
     }
 
-    public IEntityRulesValidator<T> Build() => new EntityRulesValidator<T>(rules);
+    public IRulesValidator<T> Build() => new RulesValidator<T>(rules);
 }
